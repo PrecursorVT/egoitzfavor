@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aniversario</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="login-screen" class="screen">
+        <div class="login-box">
+            <p class="info-text">El usuario es nuestro mundo y la contraseña nuestra fecha</p>
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" id="username" placeholder="Usuario">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" placeholder="Contraseña">
+            </div>
+            <button onclick="intentarLogin()" class="btn-pink">Entrar</button>
+        </div>
+    </div>
+
+    <div id="user-screen" class="screen hidden">
+        <div class="top-bar">
+            <button onclick="verMochila()" class="btn-pink">🎒 Mochila de Regalos</button>
+            <button onclick="cerrarSesion()" class="btn-logout">Salir</button>
+        </div>
+        <div id="botones-container" class="grid-container"></div>
+    </div>
+
+    <div id="admin-screen" class="screen hidden">
+        <div class="top-bar">
+            <h2>🛠️ Panel de Administración en la Nube</h2>
+            <button onclick="cerrarSesion()" class="btn-logout">Salir</button>
+        </div>
+        <div class="admin-container">
+            <div class="admin-panel admin-form">
+                <h3 id="admin-form-title">Añadir Nuevo Recuerdo</h3>
+                <input type="hidden" id="edit-index" value="-1">
+                
+                <label>Título del botón:</label>
+                <input type="text" id="admin-textoBoton" placeholder="Ej: Viaje a París">
+                
+                <label>Mensaje al abrir:</label>
+                <textarea id="admin-textoVentana" placeholder="Escribe el recuerdo aquí..."></textarea>
+                
+                <label>Nombre de la imagen (Opcional):</label>
+                <input type="text" id="admin-imagen" placeholder="Ej: foto1.jpg">
+                
+                <hr>
+                <h4>Regalo asociado (Opcional)</h4>
+                <label>Nombre del regalo:</label>
+                <input type="text" id="admin-tokenNombre" placeholder="Ej: Vale por un masaje">
+                
+                <label>Descripción del regalo:</label>
+                <input type="text" id="admin-tokenDesc" placeholder="Ej: Válido para esta noche">
+                
+                <div class="admin-actions">
+                    <button onclick="guardarRecuerdoAdmin()" class="btn-pink">Guardar en la Nube</button>
+                    <button onclick="limpiarFormularioAdmin()" class="btn-logout">Limpiar / Cancelar</button>
+                </div>
+            </div>
+
+            <div class="admin-panel admin-list">
+                <h3>Recuerdos Actuales</h3>
+                <div id="admin-list-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-text"></p>
+            <img id="modal-img" class="hidden" src="" alt="Imagen del recuerdo">
+            <div id="modal-actions"></div>
+        </div>
+    </div>
+
+    <script src="javascript/app.js"></script>
+</body>
+</html>
