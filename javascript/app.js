@@ -18,23 +18,37 @@ async function cargarDatos() {
             }
         });
         
-        if (!response.ok) throw new Error("Error al conectar con la nube");
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText}`);
+        }
         
         const result = await response.json();
-        data = result.record;
-        asegurarEstructura();
         
-        console.log("Datos cargados de la nube correctamente.");
+        // Sistema de seguridad por si JSONBin devuelve la estructura de otra forma
+        if (result && result.record) {
+            data = result.record;
+        } else if (result) {
+            data = result;
+        }
+        
+        asegurarEstructura();
+        console.log("Datos cargados de la nube correctamente.", data);
+        
     } catch (error) {
-        console.error(error);
-        alert("Error al cargar los datos. Comprueba tu conexión a internet.");
+        console.error("Detalle del error:", error);
+        alert("Aviso: No se pudo cargar el formato correcto de la nube. La web ha creado una base de datos limpia para que puedas empezar a añadir recuerdos. (Error real: " + error.message + ")");
+        asegurarEstructura(); // Forzamos una estructura limpia para que no se rompa la web
     }
 }
 
 // Guarda los datos directamente en la nube
 async function guardarDatos() {
     try {
-        console.log("Guardando en la nube...");
+        // Cambiamos el texto del botón para que sepas que está guardando
+        const btnGuardar = document.querySelector('.admin-actions .btn-pink');
+        if (btnGuardar) btnGuardar.innerText = "⏳ Guardando...";
+
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
             method: 'PUT',
             headers: {
@@ -44,20 +58,29 @@ async function guardarDatos() {
             body: JSON.stringify(data)
         });
 
-        if (!response.ok) throw new Error("No se pudo guardar");
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText}`);
+        }
+        
+        if (btnGuardar) btnGuardar.innerText = "Guardar en la Nube";
         console.log("¡Datos guardados en la nube con éxito!");
         
     } catch (error) {
-        console.error(error);
-        alert("Error al guardar en la nube.");
+        console.error("Error al guardar:", error);
+        alert("Hubo un problema al guardar en la nube: " + error.message);
+        const btnGuardar = document.querySelector('.admin-actions .btn-pink');
+        if (btnGuardar) btnGuardar.innerText = "Guardar en la Nube";
     }
 }
 
+// Esta función ahora es irrompible. Si falta algo, lo crea.
 function asegurarEstructura() {
-    if (!data.botones) data.botones = [];
-    if (!data.mochila) data.mochila = [];
-    if (!data.tokensRecibidos) data.tokensRecibidos = {};
-    if (!data.botonesVistos) data.botonesVistos = {};
+    if (!data || typeof data !== 'object') data = {};
+    if (!Array.isArray(data.botones)) data.botones = [];
+    if (!Array.isArray(data.mochila)) data.mochila = [];
+    if (!data.tokensRecibidos || typeof data.tokensRecibidos !== 'object') data.tokensRecibidos = {};
+    if (!data.botonesVistos || typeof data.botonesVistos !== 'object') data.botonesVistos = {};
 }
 
 // Iniciar la carga al abrir la página
@@ -169,6 +192,11 @@ function renderizarPanelAdmin() {
     const contenedor = document.getElementById('admin-list-container');
     contenedor.innerHTML = '';
 
+    if (data.botones.length === 0) {
+        contenedor.innerHTML = '<p>Aún no hay recuerdos añadidos.</p>';
+        return;
+    }
+
     data.botones.forEach((boton, index) => {
         const div = document.createElement('div');
         div.className = 'admin-item-row';
@@ -219,7 +247,7 @@ async function guardarRecuerdoAdmin() {
     await guardarDatos();
     renderizarPanelAdmin();
     limpiarFormularioAdmin();
-    alert("¡Guardado en la nube correctamente!");
+    alert("¡Recuerdo guardado en la nube con éxito!");
 }
 
 function editarRecuerdo(index) {
