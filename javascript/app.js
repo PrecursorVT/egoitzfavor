@@ -1,6 +1,5 @@
-// --- CONFIGURACIÓN DE TU NUBE JSONBIN ---
 const BIN_ID = "69d60e4f856a6821890e30d1"; 
-const API_KEY = "$2a$10$5jj1905ScMx4XMoWz8BnwuzT9VEj9IdBdZe5/IkumFbqLCsw20S5a"; 
+const API_KEY = "$2a$10$GRr9rJefio3A6U3J0yA0j.AFZk1Me7JP1VuBtxJtFhDRrgnIMQhPy"; 
 
 let data = {
     botones: [],
@@ -9,7 +8,6 @@ let data = {
     botonesVistos: {}
 };
 
-// Carga los datos directamente desde la nube
 async function cargarDatos() {
     try {
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -25,7 +23,6 @@ async function cargarDatos() {
         
         const result = await response.json();
         
-        // Sistema de seguridad por si JSONBin devuelve la estructura de otra forma
         if (result && result.record) {
             data = result.record;
         } else if (result) {
@@ -38,14 +35,12 @@ async function cargarDatos() {
     } catch (error) {
         console.error("Detalle del error:", error);
         alert("Aviso: No se pudo cargar el formato correcto de la nube. La web ha creado una base de datos limpia para que puedas empezar a añadir recuerdos. (Error real: " + error.message + ")");
-        asegurarEstructura(); // Forzamos una estructura limpia para que no se rompa la web
+        asegurarEstructura();
     }
 }
 
-// Guarda los datos directamente en la nube
 async function guardarDatos() {
     try {
-        // Cambiamos el texto del botón para que sepas que está guardando
         const btnGuardar = document.querySelector('.admin-actions .btn-pink');
         if (btnGuardar) btnGuardar.innerText = "⏳ Guardando...";
 
@@ -83,11 +78,9 @@ function asegurarEstructura() {
     if (!data.botonesVistos || typeof data.botonesVistos !== 'object') data.botonesVistos = {};
 }
 
-// Iniciar la carga al abrir la página
 cargarDatos();
 
 
-// --- LÓGICA DE LOGIN Y NAVEGACIÓN ---
 function intentarLogin() {
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
@@ -117,7 +110,6 @@ function cerrarSesion() {
 }
 
 
-// --- LÓGICA DEL USUARIO NORMAL ---
 function renderizarBotonesUsuario() {
     const contenedor = document.getElementById('botones-container');
     contenedor.innerHTML = ''; 
@@ -187,7 +179,6 @@ async function usarRegalo(index) {
 }
 
 
-// --- LÓGICA DEL ADMINISTRADOR ---
 function renderizarPanelAdmin() {
     const contenedor = document.getElementById('admin-list-container');
     contenedor.innerHTML = '';
