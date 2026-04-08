@@ -69,7 +69,6 @@ async function guardarDatos() {
     }
 }
 
-// Esta función ahora es irrompible. Si falta algo, lo crea.
 function asegurarEstructura() {
     if (!data || typeof data !== 'object') data = {};
     if (!Array.isArray(data.botones)) data.botones = [];

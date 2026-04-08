@@ -25,7 +25,6 @@ body {
     display: none !important; 
 }
 
-/* Login */
 .login-box { 
     background: rgba(0, 0, 0, 0.75); 
     padding: 40px; 
@@ -63,7 +62,6 @@ body {
     font-size: 16px;
 }
 
-/* Botones Generales */
 button { 
     cursor: pointer; 
     padding: 12px 24px; 
@@ -93,7 +91,6 @@ button {
     background-color: #cccccc;
 }
 
-/* Menú Usuario */
 .top-bar { 
     width: 100%; 
     padding: 20px; 
@@ -136,7 +133,6 @@ button {
     transform: scale(1.05);
 }
 
-/* Modal (Ventanas emergentes) */
 .modal { 
     position: fixed; 
     top: 0; 
@@ -203,7 +199,7 @@ button {
     margin-top: 0;
     color: #ff1493;
 }
-/* ---- ESTILOS DEL PANEL DE ADMINISTRADOR ---- */
+
 .admin-container {
     display: flex;
     flex-wrap: wrap;
