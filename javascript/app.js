@@ -88,7 +88,7 @@ function intentarLogin() {
     if (user === "Truesky" && pass === "20240413") {
         cambiarPantalla('user-screen');
         renderizarBotonesUsuario();
-    } else if (user === "admin" && pass === "admin") {
+    } else if (user === "Egot" && pass === "Lucy") {
         cambiarPantalla('admin-screen');
         renderizarPanelAdmin();
     } else {
